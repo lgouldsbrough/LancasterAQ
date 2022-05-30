@@ -1,0 +1,5 @@
+scipy
+pytest
+networkx
+numpy
+shapely
