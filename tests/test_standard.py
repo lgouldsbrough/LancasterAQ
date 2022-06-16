@@ -29,3 +29,7 @@ def test_to_scipy():
 def test_to_json():
     data = laq.dataset()
     data_to_json = data.to_json()
+
+# def test_to_geopandas():
+#     data = laq.dataset()
+#     data_to_geopandas = data.to_geopandas()

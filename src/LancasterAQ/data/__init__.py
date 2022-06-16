@@ -4,5 +4,5 @@ __all__ = ['dataset']
 
 
 def dataset():
-    from .data_class import DataClass
-    return DataClass()
+    from .data_object import DataObject
+    return DataObject()

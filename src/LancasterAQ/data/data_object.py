@@ -11,11 +11,11 @@ from ..readwrite import read_pickle, GraphEncoder
 if TYPE_CHECKING:
     from networkx.classes.multigraph import MultiGraph
 
-__all__ = ['DataClass']
+__all__ = ['DataObject']
 
 
 # todo: add docstrings
-class DataClass:
+class DataObject:
     def __init__(self):
         data_path = files('LancasterAQ.data').joinpath('lancaster.gpickle')
         with as_file(data_path) as lancaster_data_path:
@@ -42,6 +42,11 @@ class DataClass:
         return g
 
     def to_scipy(self, **kwargs):
+        """Returns a SciPy Sparse array.
+
+        Hint: Scipy sparse matrices are faster matrices comprised
+        of mostly zeros.
+        """
         g = nx.to_scipy_sparse_array(self.graph, **kwargs)
         return g
 
@@ -50,6 +55,30 @@ class DataClass:
         # dump as string using class GraphEncoder from readwrite.gpickle
         return json.dumps(j, cls=GraphEncoder)
 
+    # todo: convert to geopandas
+    # def to_geopandas(self):
+    #     import momepy
+    #     nodes, edges, sw = momepy.nx_to_gdf(self.graph, points=True, lines=True,
+    #                                         spatial_weights=True)
+    #     return nodes, edges, sw
+
+    # todo: produce plots
     def plot(self):
         import warnings
         warnings.warn('Not implemented yet!!')
+
+    # todo: subset cycling data
+    # def cycling(self):
+    #     return
+
+    # todo: subset driving data
+    # def driving(self):
+    #     return
+
+    # todo: time indexing - e.g. return graph per day
+    # def time_index(self):
+    #     return
+
+    # todo: demonstrate basic model fitting
+    # def fit_xx_model()
+    #     return
