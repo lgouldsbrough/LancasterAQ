@@ -48,7 +48,7 @@ EXTRAS = {
         "flake8",
         "pytest",
     ],
-    "examples": ["seaborn"],
+    "examples": ["seaborn", "watermark"],
 }
 
 setup(
