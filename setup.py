@@ -40,6 +40,17 @@ def find_version(*file_paths):
 version = find_version("src", "LancasterAQ", "__init__.py")
 readme = open("README.md").read()
 
+EXTRAS = {
+    "dev": [
+        "black",
+        "isort",
+        "pylint",
+        "flake8",
+        "pytest",
+    ],
+    "examples": ["seaborn"],
+}
+
 setup(
     name="lancasteraq",
     version=version,
@@ -49,4 +60,6 @@ setup(
     description="Lancaster air quality data.",
     long_description=readme,
     long_description_content_type="text/markdown",
+    install_requires=parse_requirements_file("requirements.txt"),
+    extras_require=EXTRAS,
 )
