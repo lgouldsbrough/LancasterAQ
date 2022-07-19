@@ -4,6 +4,10 @@ from importlib.resources import files, as_file
 
 import networkx as nx
 from networkx.readwrite import json_graph
+import pandas as pd
+import warnings
+import numpy as np
+import abc
 
 from ..readwrite import read_pickle, GraphEncoder
 
@@ -11,19 +15,40 @@ from ..readwrite import read_pickle, GraphEncoder
 if TYPE_CHECKING:
     from networkx.classes.multigraph import MultiGraph
 
-__all__ = ['DataObject']
+__all__ = ["DataObject"]
+
+
+class DataObject:
+    def __repr__(self):
+        return "Lancaster Air Quality Dataset"
+
+    def plot(self):
+        warnings.warn("Not implemented yet!!")
+
+    @abc.abstractmethod
+    def to_numpy(self):
+        raise NotImplementedError
+
+
+class TabularObject(DataObject):
+    def __init__(self):
+        data_path = files("LancasterAQ.data").joinpath("processed_data.csv")
+        self.data = pd.read_csv(data_path)
+
+    def to_numpy(self) -> np.ndarray:
+        return self.data.values
+
+    def to_pandas(self) -> pd.DataFrame:
+        return self.data
 
 
 # todo: add docstrings
-class DataObject:
+class GraphObject(DataObject):
     def __init__(self):
-        data_path = files('LancasterAQ.data').joinpath('lancaster.gpickle')
+        data_path = files("LancasterAQ.data").joinpath("lancaster.gpickle")
         with as_file(data_path) as lancaster_data_path:
             self.graph: MultiGraph = read_pickle(lancaster_data_path)
             """The `nextworkx` multigraph object"""
-
-    def __repr__(self):
-        return "Lancaster Air Quality Dataset"
 
     def to_numpy(self, **kwargs):
         g = nx.to_numpy_array(self.graph, **kwargs)
@@ -61,11 +86,6 @@ class DataObject:
     #     nodes, edges, sw = momepy.nx_to_gdf(self.graph, points=True, lines=True,
     #                                         spatial_weights=True)
     #     return nodes, edges, sw
-
-    # todo: produce plots
-    def plot(self):
-        import warnings
-        warnings.warn('Not implemented yet!!')
 
     # todo: subset cycling data
     # def cycling(self):
