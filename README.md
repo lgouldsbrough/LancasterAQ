@@ -12,6 +12,11 @@ Included are tools to:
 
 ### Manual Installation
 
+#### Install environment (through conda)
+```bash
+conda env create -f environment.yml
+```
+
 #### Local install
 
 ```bash
