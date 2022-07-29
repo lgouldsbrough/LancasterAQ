@@ -22,9 +22,6 @@ class DataObject:
     def __repr__(self):
         return "Lancaster Air Quality Dataset"
 
-    def plot(self):
-        warnings.warn("Not implemented yet!!")
-
     @abc.abstractmethod
     def to_numpy(self):
         raise NotImplementedError
@@ -42,7 +39,6 @@ class TabularObject(DataObject):
         return self.data
 
 
-# todo: add docstrings
 class GraphObject(DataObject):
     def __init__(self):
         data_path = files("LancasterAQ.data").joinpath("lancaster.gpickle")
@@ -79,26 +75,3 @@ class GraphObject(DataObject):
         j = json_graph.adjacency_data(self.graph)
         # dump as string using class GraphEncoder from readwrite.gpickle
         return json.dumps(j, cls=GraphEncoder)
-
-    # todo: convert to geopandas
-    # def to_geopandas(self):
-    #     import momepy
-    #     nodes, edges, sw = momepy.nx_to_gdf(self.graph, points=True, lines=True,
-    #                                         spatial_weights=True)
-    #     return nodes, edges, sw
-
-    # todo: subset cycling data
-    # def cycling(self):
-    #     return
-
-    # todo: subset driving data
-    # def driving(self):
-    #     return
-
-    # todo: time indexing - e.g. return graph per day
-    # def time_index(self):
-    #     return
-
-    # todo: demonstrate basic model fitting
-    # def fit_xx_model()
-    #     return
