@@ -3,6 +3,7 @@
 **/build
 **/lancs_aq.json
 **/venv
+examples/*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
