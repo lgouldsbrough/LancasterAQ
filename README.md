@@ -4,9 +4,8 @@ Python package developed for the Lancaster Air Quality project.
 
 Included are tools to:
 
-* Convert the graph object to different formats
-* Produce exploratory plots of the data
-* Fit simple models on the data
+* Import the dataset
+* Convert the dataset to different formats
 
 ## Installation Instructions
 
@@ -35,29 +34,54 @@ pip install git+https://github.com/lgouldsbrough/LancasterAQ.git
 # or `python -m pip ...` for environment safety 
 ```
 
-<details>
-<summary><strike>PyPi Installation</strike> WIP </summary>
-
 ### PyPi Installation
+#### TODO
 
 ```bash
 $ pip install LancasterAQ
 ```
 
-</details>
-
 ## Loading in the Lancaster AQ dataset
-
 ```python
 import LancasterAQ as laq
 
-# load the data
-data = laq.dataset()
+# load tabular data
+data = laq.TabularObject()
+
+# OR load the graph object
+data = laq.GraphObject()
+```
+A helper function is also available:
+```python
+import LancasterAQ as laq
+# load tabular data
+data = laq.dataset('TabularObject')
+# OR load the graph object
+data = laq.dataset('GraphObject')
+
 ```
 
-## Convert the data to different formats
-> note: to avoid implicit data copies replace the `data` object with the dataset function call.
-> For example:`data.to_numpy()` to `laq.dataset().to_numpy()` 
+## Convert the tabular data to different formats
+To avoid implicit data copies replace the `data` object with the dataset function call.
+
+For example: replace `data.to_numpy()` with `laq.TabularObject().to_numpy()`
+### Convert to a pandas dataframe
+
+``` python
+data = data.to_pandas()
+```
+
+### Convert to a numpy array
+
+``` python
+data = data.to_numpy()
+```
+
+## Convert the graph object to different formats
+
+To avoid implicit data copies replace the `data` object with the dataset function call.
+
+For example: replace `data.to_numpy()` with `laq.GraphObject().to_numpy()`
 
 #### Convert to a numpy sparse array
 
@@ -101,24 +125,11 @@ scipy_sparse_array = data.to_scipy()
 data_json = data.to_json()
 ```
 
-#### Convert to geopandas
+## Example notebook
 
-``` python
-# 
-```
+An introductory notebook can be found within the [examples folder](examples/introduction.ipynb).
 
-## Data exploration
+<sub>Note: requires [Matplotlib](https://matplotlib.org/stable/users/getting_started/index.html#installation-quick-start) 
+and [Seaborn](https://seaborn.pydata.org/installing.html)
+packages.</sub>
 
-``` python
-#
-```
-
-## Examples of model fitting
-
-``` python
-#
-```
-
-## Further information
-
-Measurements taken around Lancaster on the ... Measurement equipment ...
