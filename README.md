@@ -9,7 +9,7 @@ Included are tools to:
 
 ## Installation Instructions
 
-### PyPi Installation
+### PyPI Installation
 
 ```bash
 $ pip install LancasterAQ
