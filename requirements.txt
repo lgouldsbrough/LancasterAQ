@@ -4,4 +4,3 @@ networkx
 pandas
 numpy
 shapely
-pandas
