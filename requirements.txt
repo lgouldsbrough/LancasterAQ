@@ -1,5 +1,6 @@
 scipy
 pytest
 networkx
+pandas
 numpy
 shapely
