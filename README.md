@@ -35,7 +35,6 @@ pip install git+https://github.com/lgouldsbrough/LancasterAQ.git
 ```
 
 ### PyPi Installation
-#### TODO
 
 ```bash
 $ pip install LancasterAQ
