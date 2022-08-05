@@ -85,4 +85,4 @@ dependencies:
     - pandas==1.4.3
     - pytz==2022.1
     - scipy==1.9.0rc2
-prefix: /home/pindert2/miniconda3/envs/lancasteraq-env
+

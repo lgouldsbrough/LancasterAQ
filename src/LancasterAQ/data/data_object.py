@@ -1,5 +1,5 @@
 import json
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Dict, Any
 from importlib.resources import files, as_file
 
 import networkx as nx
@@ -15,15 +15,14 @@ from ..readwrite import read_pickle, GraphEncoder
 if TYPE_CHECKING:
     from networkx.classes.multigraph import MultiGraph
 
-__all__ = ["DataObject"]
+__all__ = ['TabularObject', 'GraphObject']
 
 
 class DataObject:
+    """Base class for Lancaster Air Quality Dataset"""
+
     def __repr__(self):
         return "Lancaster Air Quality Dataset"
-
-    def plot(self):
-        warnings.warn("Not implemented yet!!")
 
     @abc.abstractmethod
     def to_numpy(self):
@@ -31,74 +30,81 @@ class DataObject:
 
 
 class TabularObject(DataObject):
+    """Tabular dataset for Lancaster Air Quality Dataset"""
+
     def __init__(self):
         data_path = files("LancasterAQ.data").joinpath("processed_data.csv")
-        self.data = pd.read_csv(data_path)
+        self.data: pd.DataFrame = pd.read_csv(data_path)
+        """The :class:`pandas.DataFrame` object"""
 
-    def to_numpy(self) -> np.ndarray:
-        return self.data.values
+    def to_numpy(self, **kwargs) -> np.ndarray:
+        """Convert to a NumPy array.
+
+        Alias for :class:`pandas.Dataframe.to_numpy()`,
+        see `Pandas documentation
+        <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_numpy.html>`_
+        for further details.
+        """
+        return self.data.to_numpy(**kwargs)
 
     def to_pandas(self) -> pd.DataFrame:
+        """Returns the internal :class:`pandas.Dataframe` object."""
         return self.data
 
 
-# todo: add docstrings
 class GraphObject(DataObject):
+    """Graph dataset for Lancaster Air Quality Dataset"""
+
     def __init__(self):
         data_path = files("LancasterAQ.data").joinpath("lancaster.gpickle")
         with as_file(data_path) as lancaster_data_path:
             self.graph: MultiGraph = read_pickle(lancaster_data_path)
-            """The `nextworkx` multigraph object"""
+            """The :class:`nextworkx.MultiGraph` object"""
 
-    def to_numpy(self, **kwargs):
+    def to_numpy(self, **kwargs) -> np.ndarray:
+        """Returns graph object as :class:`numpy.ndarray`
+
+        Alias for :func:`networkx.convert_matrix.to_numpy_array()`
+        """
         g = nx.to_numpy_array(self.graph, **kwargs)
         return g
 
-    def to_dict(self, **kwargs):
+    def to_dict(self, **kwargs) -> Dict:
+        """Returns adjacency representation of graph as a dictionary of dictionaries.
+
+        Alias for :func:`networkx.to_dict_of_dicts()`
+        """
         g = nx.to_dict_of_dicts(self.graph, **kwargs)
         return g
 
-    def to_edgelist(self, **kwargs):
+    def to_edgelist(self, **kwargs) -> List:
+        """Returns a list of edges in the graph
+
+        Alias for :func:`nx.to_edgelist()`
+        """
         g = nx.to_edgelist(self.graph, **kwargs)
         return g
 
-    def to_dict_of_lists(self, **kwargs):
+    def to_dict_of_lists(self, **kwargs) -> Dict[Any, List]:
+        """Returns adjacency representation of graph as a dictionary of lists.
+
+        Alias for :func:`networkx.to_dict_of_lists()`
+        """
         g = nx.to_dict_of_lists(self.graph, **kwargs)
         return g
 
     def to_scipy(self, **kwargs):
-        """Returns a SciPy Sparse array.
+        """Returns a `SciPy Sparse array <https://docs.scipy.org/doc/scipy/reference/sparse.html>`_.
 
-        Hint: Scipy sparse matrices are faster matrices comprised
+        Hint: Scipy sparse matrices are faster for matrices comprised
         of mostly zeros.
+
+        Alias for :func:`networkx.to_scipy_sparse_array()`.
         """
         g = nx.to_scipy_sparse_array(self.graph, **kwargs)
         return g
 
     def to_json(self) -> str:
+        """Returns a JSON string using :class:`readwrite.gpickle.GraphEncoder`"""
         j = json_graph.adjacency_data(self.graph)
-        # dump as string using class GraphEncoder from readwrite.gpickle
         return json.dumps(j, cls=GraphEncoder)
-
-    # todo: convert to geopandas
-    # def to_geopandas(self):
-    #     import momepy
-    #     nodes, edges, sw = momepy.nx_to_gdf(self.graph, points=True, lines=True,
-    #                                         spatial_weights=True)
-    #     return nodes, edges, sw
-
-    # todo: subset cycling data
-    # def cycling(self):
-    #     return
-
-    # todo: subset driving data
-    # def driving(self):
-    #     return
-
-    # todo: time indexing - e.g. return graph per day
-    # def time_index(self):
-    #     return
-
-    # todo: demonstrate basic model fitting
-    # def fit_xx_model()
-    #     return
