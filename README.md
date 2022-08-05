@@ -9,6 +9,12 @@ Included are tools to:
 
 ## Installation Instructions
 
+### PyPi Installation
+
+```bash
+$ pip install LancasterAQ
+```
+
 ### Manual Installation
 
 #### Local install
@@ -32,12 +38,6 @@ $ pip install .
 # pip install from github
 pip install git+https://github.com/lgouldsbrough/LancasterAQ.git
 # or `python -m pip ...` for environment safety 
-```
-
-### PyPi Installation
-
-```bash
-$ pip install LancasterAQ
 ```
 
 ## Loading in the Lancaster AQ dataset
