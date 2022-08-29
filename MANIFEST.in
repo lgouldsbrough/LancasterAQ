@@ -1,0 +1,2 @@
+include data/lancaster.gpickle
+include data/processed_data.csv
