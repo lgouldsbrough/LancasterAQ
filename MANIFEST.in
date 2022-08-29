@@ -1,2 +1,2 @@
-include LancasterAQ/data/lancaster.gpickle
-include LancasterAQ/data/processed_data.csv
+include src/LancasterAQ/data/lancaster.gpickle
+include src/LancasterAQ/data/processed_data.csv
