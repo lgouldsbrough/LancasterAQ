@@ -40,6 +40,14 @@ pip install git+https://github.com/lgouldsbrough/LancasterAQ.git
 # or `python -m pip ...` for environment safety 
 ```
 
+## Example notebook
+
+An introductory notebook can be found within the [examples folder](examples/introduction.ipynb).
+
+<sub>Note: requires [Matplotlib](https://matplotlib.org/stable/users/getting_started/index.html#installation-quick-start) 
+and [Seaborn](https://seaborn.pydata.org/installing.html)
+packages.</sub>
+
 ## Loading in the Lancaster AQ dataset
 ```python
 import LancasterAQ as laq
@@ -123,12 +131,4 @@ scipy_sparse_array = data.to_scipy()
 # returns json object of graph
 data_json = data.to_json()
 ```
-
-## Example notebook
-
-An introductory notebook can be found within the [examples folder](examples/introduction.ipynb).
-
-<sub>Note: requires [Matplotlib](https://matplotlib.org/stable/users/getting_started/index.html#installation-quick-start) 
-and [Seaborn](https://seaborn.pydata.org/installing.html)
-packages.</sub>
 
