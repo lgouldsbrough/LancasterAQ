@@ -1,4 +1,5 @@
 import json
+from logging import warning
 from typing import TYPE_CHECKING, List, Dict, Any
 from importlib.resources import files, as_file
 
@@ -8,6 +9,8 @@ import pandas as pd
 import warnings
 import numpy as np
 import abc
+import geopandas as gpd
+import osmnx as ox
 
 from ..readwrite import read_pickle, GraphEncoder
 
@@ -50,6 +53,35 @@ class TabularObject(DataObject):
     def to_pandas(self) -> pd.DataFrame:
         """Returns the internal :class:`pandas.Dataframe` object."""
         return self.data
+
+    def to_geopandas(self) -> gpd.GeoDataFrame:
+        """Convert to a :class:`geopandas.GeoDataFrame` object."""
+        gdf = gpd.GeoDataFrame(
+            self.data, geometry=gpd.points_from_xy(self.data.lon, self.data.lat))
+        gdf = gdf.set_crs('EPSG:4326')
+        gdf = ox.projection.project_gdf(gdf)
+        return gdf
+
+    def to_geopandas_with_metadata(self) -> gpd.GeoDataFrame:
+        """Convert to a :class:`geopandas.GeoDataFrame` object, with open street map metadata from edges."""
+        warnings.warn("This method takes up to two minutes to retrieve all the metadata. You could save the gdf if you wanted.")
+        gdf = self.to_geopandas()
+
+        G = ox.graph_from_bbox(gdf.lat.max(), gdf.lat.min(), gdf.lon.max(), gdf.lon.min(), network_type='all')
+        # Project the graph to UTM
+        P = ox.projection.project_graph(G)
+
+        # Get projected node coordinates
+        x = gdf.geometry.x
+        y = gdf.geometry.y
+
+        # We first need to find the edges on the graph that are closest to the points
+        edges = ox.distance.nearest_edges(P, x, y)
+        edge_info = pd.DataFrame([P.get_edge_data(edge[0], edge[1])[0] for edge in edges])
+
+        for col in edge_info.columns:
+            gdf[col] = edge_info[col] 
+        return gdf
 
 
 class GraphObject(DataObject):
