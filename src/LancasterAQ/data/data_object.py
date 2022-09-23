@@ -67,6 +67,7 @@ class TabularObject(DataObject):
     def to_geopandas_with_metadata(self) -> gpd.GeoDataFrame:
         """Convert to a :class:`geopandas.GeoDataFrame` object, with open street map metadata from edges."""
         gdf_path = files("LancasterAQ.data").joinpath("gdf_with_metadata.pkl")
+        print(gdf_path)
         if os.path.exists(gdf_path):
             warnings.warn("Using pre-cached geodataframe with metadata")
             gdf = pickle.load(open(gdf_path, 'rb'))
