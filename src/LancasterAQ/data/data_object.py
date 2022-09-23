@@ -10,7 +10,9 @@ import warnings
 import numpy as np
 import abc
 import geopandas as gpd
+import os
 import osmnx as ox
+import pickle
 
 from ..readwrite import read_pickle, GraphEncoder
 
@@ -64,23 +66,31 @@ class TabularObject(DataObject):
 
     def to_geopandas_with_metadata(self) -> gpd.GeoDataFrame:
         """Convert to a :class:`geopandas.GeoDataFrame` object, with open street map metadata from edges."""
-        warnings.warn("This method takes up to two minutes to retrieve all the metadata. You could save the gdf if you wanted.")
-        gdf = self.to_geopandas()
+        gdf_path = files("LancasterAQ.data").joinpath("gdf_with_metadata.pkl")
+        if os.path.exists(gdf_path):
+            warnings.warn("Using pre-cached geodataframe with metadata")
+            gdf = pickle.load(open(gdf_path, 'rb'))
+        else:
+            warnings.warn("This method takes up to two minutes to retrieve all the metadata. You could save the gdf if you wanted.")
+            gdf = self.to_geopandas()
 
-        G = ox.graph_from_bbox(gdf.lat.max(), gdf.lat.min(), gdf.lon.max(), gdf.lon.min(), network_type='all')
-        # Project the graph to UTM
-        P = ox.projection.project_graph(G)
+            G = ox.graph_from_bbox(gdf.lat.max(), gdf.lat.min(), gdf.lon.max(), gdf.lon.min(), network_type='all')
+            # Project the graph to UTM
+            P = ox.projection.project_graph(G)
 
-        # Get projected node coordinates
-        x = gdf.geometry.x
-        y = gdf.geometry.y
+            # Get projected node coordinates
+            x = gdf.geometry.x
+            y = gdf.geometry.y
 
-        # We first need to find the edges on the graph that are closest to the points
-        edges = ox.distance.nearest_edges(P, x, y)
-        edge_info = pd.DataFrame([P.get_edge_data(edge[0], edge[1])[0] for edge in edges])
+            # We first need to find the edges on the graph that are closest to the points
+            edges = ox.distance.nearest_edges(P, x, y)
+            edge_info = pd.DataFrame([P.get_edge_data(edge[0], edge[1])[0] for edge in edges])
 
-        for col in edge_info.columns:
-            gdf[col] = edge_info[col] 
+            for col in edge_info.columns:
+                gdf[col] = edge_info[col] 
+
+            pickle.dump(gdf, open(gdf_path, 'wb'))
+
         return gdf
 
 
