@@ -9,6 +9,9 @@ Included are tools to:
 
 ## Installation Instructions
 
+> *Note*:
+> Package requires >= Python 3.9
+
 ### PyPI Installation
 
 ```bash
