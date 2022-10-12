@@ -4,3 +4,5 @@ networkx
 pandas
 numpy
 shapely
+geopandas
+osmnx

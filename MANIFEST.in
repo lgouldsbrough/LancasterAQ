@@ -1,2 +1,3 @@
 include src/LancasterAQ/data/lancaster.gpickle
+include src/LancasterAQ/data/gdf_with_metadata.pkl
 include src/LancasterAQ/data/processed_data.csv

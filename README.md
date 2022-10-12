@@ -81,6 +81,12 @@ For example: replace `data.to_numpy()` with `laq.TabularObject().to_numpy()`
 data = data.to_pandas()
 ```
 
+### Convert to a geopandas dataframe
+
+``` python
+data = data.to_geopandas()
+```
+
 ### Convert to a numpy array
 
 ``` python
