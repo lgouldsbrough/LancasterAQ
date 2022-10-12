@@ -37,9 +37,13 @@ class DataObject:
 class TabularObject(DataObject):
     """Tabular dataset for Lancaster Air Quality Dataset"""
 
-    def __init__(self):
+    def __init__(self, remove_duplicates: bool = True):
         data_path = files("LancasterAQ.data").joinpath("processed_data.csv")
-        self.data: pd.DataFrame = pd.read_csv(data_path)
+        data = pd.read_csv(data_path)
+        if remove_duplicates:
+            self.data: pd.DataFrame = data.drop_duplicates(inplace=False)
+        else:
+            self.data: pd.DataFrame = data
         """The :class:`pandas.DataFrame` object"""
 
     def to_numpy(self, **kwargs) -> np.ndarray:
