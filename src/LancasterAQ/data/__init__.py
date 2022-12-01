@@ -5,7 +5,7 @@ from .data_object import __all__ as options
 __all__ = ["dataset"]
 
 
-def dataset(arg: str = 'GraphObject') -> Union[options]:
+def dataset(arg: str = 'GraphObject') -> Union['TabularObject', 'GraphObject']:
     """Helper function for loading dataset
 
     :param arg: The type of dataset options:['GraphObject', 'TabularObject']
