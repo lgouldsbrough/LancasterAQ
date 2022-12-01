@@ -5,16 +5,16 @@ from .data_object import __all__ as options
 __all__ = ["dataset"]
 
 
-def dataset(arg: str='GraphObject') -> options:
+def dataset(arg: str = 'GraphObject') -> Union['TabularObject', 'GraphObject']:
     """Helper function for loading dataset
 
     :param arg: The type of dataset options:['GraphObject', 'TabularObject']
-    :return: a dataset object instance
+    :return: A dataset object instance
     """
     if arg == options[0]:
-        from .data_object import GraphObject as data_object
-    elif arg == options[1]:
         from .data_object import TabularObject as data_object
+    elif arg == options[1]:
+        from .data_object import GraphObject as data_object
     else:
         raise RuntimeError(f'No dataset of type {arg} available.')
 

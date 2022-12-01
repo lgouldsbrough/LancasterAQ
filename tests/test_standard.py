@@ -12,10 +12,14 @@ def tabular_object():
     return laq.TabularObject()
 
 def test_dataset_graph():
-    assert laq.dataset('GraphObject')
+    dataset = laq.dataset('GraphObject')
+    assert dataset
+    assert isinstance(dataset, laq.GraphObject)
 
 def test_dataset_tabular():
-    assert laq.dataset('TabularObject')
+    dataset = laq.dataset('TabularObject')
+    assert dataset
+    assert isinstance(dataset, laq.TabularObject)
 
 class TestGraphObject:
     def test_graph_object(self, graph_object):
